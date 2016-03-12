@@ -1,6 +1,5 @@
 bin
 lib
 include
-*pyc
+*.pyc
 pip-selfcheck.json
-site_watcher/__pycache__/*
