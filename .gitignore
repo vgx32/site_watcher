@@ -1,0 +1,6 @@
+bin
+lib
+include
+*pyc
+pip-selfcheck.json
+site_watcher/__pycache__/*
