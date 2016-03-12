@@ -39,7 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_extensions',
-    'alert_manager'
+    'alert_manager_api',
+    'alert_manager',
+
 )
 
 MIDDLEWARE_CLASSES = (
