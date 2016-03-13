@@ -10,7 +10,7 @@ class Alert(models.Model):
   analysis_op = models.CharField(max_length=100)
   notification_type = models.CharField(max_length=100)
   last_ran = models.DateTimeField()
-
+  # owner = models.ForeignKey('auth.User', related_name='alerts')
 
 class SearchTerm(models.Model):
   models.CharField(max_length=100)
@@ -21,6 +21,6 @@ class SearchTerm(models.Model):
 class MatchResult(models.Model):
   models.ForeignKey('Alert',
                       on_delete=models.CASCADE,
-                      related_name='results')
+                      related_name='match_results')
   url = models.URLField()
   result_context = models.TextField()
