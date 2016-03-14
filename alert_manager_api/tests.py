@@ -1,15 +1,21 @@
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 
+alerts_name = "alerts"
+alert_name = "alert"
+matchest_name = "matches"
+match_name = "match"
+token_name = "token"
+api_root_name = "api_root"
 
 # Create your tests here.
 
 class AlertApiTests(APITestCase):
 
-  def setup(self):
+  def setUp(self):
     self.testAlert = {
       "root_url" : "www.example.com",
       "scrape_level" : 3,
@@ -17,15 +23,27 @@ class AlertApiTests(APITestCase):
       "analysis_op" : "string_match",
       "notification_type": "none"
     }
-    
+    username = 'testhuser'
+    password = 'password'
 
-  alerts_name = "alerts"
-  alert_name = "alert"
-  matchest_name = "matches"
-  match_name = "match"
+
+    self.user = User.objects.create_user(username, 
+                                          email='test@example.com',
+                                          password=password)
+    self.client.login(username=username,
+                      password=password  )
+    # print("credentials " + self.client.credentials())
+
+  
+  def test_api_root(self):
+    pass
+
+  def test_api_schema(self):
+    pass
 
   def test_create_alert(self):
-    alert_endpoint = reverse(self.alerts_name)
+    print("user in test : [%s ]" % self.user )
+    alert_endpoint = reverse(alerts_name)
     r = self.client.get(alert_endpoint)
     self.assertTrue(status.is_success(r.status_code))
     self.assertEqual(r.data, [])
@@ -63,4 +81,37 @@ class AlertApiTests(APITestCase):
   def test_results_e2e(self):
     print("TODO: think about what to do for this case")
     pass
-  
+
+class AuthTests(APITestCase):
+
+    def setUp(self):
+      username = 'testhuser'
+      password = 'password'
+      self.user = User.objects.create_user(username, 
+                                            email='test@example.com',
+                                            password=password)
+      self.credentials = {
+        'username' : username,
+        'password' : password
+      }
+
+
+
+    def test_obtain_token(self):
+      r = self.client.post(reverse(token_name), self.credentials )
+      self.assertTrue(status.is_success(r.status_code))
+      self.assertTrue('token' in r.data)
+
+    def test_access_with_token(self):
+      r = self.client.post(reverse(token_name), self.credentials )
+      self.assertTrue('token' in r.data)
+      self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
+      r = self.client.get(reverse(api_root_name))
+      self.assertTrue(status.is_success(r.status_code))
+
+    def test_access_denied_without_token(self):
+      r = self.client.get(reverse(api_root_name))
+      self.assertTrue(status.is_client_error(r.status_code))
+
+
+      
