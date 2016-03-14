@@ -21,5 +21,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^app/', include('alert_manager.urls')),
+    url(r'^api/', include('alert_manager_api.urls')),
+
 
 ]
