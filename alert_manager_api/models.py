@@ -26,8 +26,8 @@ class Alert(models.Model):
   # owner = models.ForeignKey('auth.User', related_name='alerts')
 
 class SearchTerm(models.Model):
-  models.CharField(max_length=100)
-  models.ForeignKey('Alert', 
+  term = models.CharField(max_length=100)
+  alert = models.ForeignKey('Alert', 
                     on_delete=models.CASCADE,
                     related_name='search_terms')
 
