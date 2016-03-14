@@ -54,11 +54,11 @@ class AlertApiTests(APITestCase):
     print("user in test : [%s ]" % self.user )
     alert_endpoint = reverse(alerts_name)
     r = self.client.get(alert_endpoint)
-    self.assertTrue(status.is_success(r.status_code))
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, [])
 
     r = self.client.post(alert_endpoint, self.testAlert)
-    self.assertTrue(status.is_success(r.status_code))
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, self.testAlert)
   
   def test_create_with_required_fields(self):
@@ -108,7 +108,7 @@ class AuthTests(APITestCase):
 
     def test_obtain_token(self):
       r = self.client.post(reverse(token_name), self.credentials )
-      self.assertTrue(status.is_success(r.status_code))
+      self.assertEqual(r.status_code, status.HTTP_200_OK)
       self.assertTrue('token' in r.data)
 
     def test_access_with_token(self):
@@ -116,7 +116,7 @@ class AuthTests(APITestCase):
       self.assertTrue('token' in r.data)
       self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
       r = self.client.get(reverse(api_root_name))
-      self.assertTrue(status.is_success(r.status_code))
+      self.assertEqual(r.status_code, status.HTTP_200_OK)
 
     def test_access_denied_without_token(self):
       r = self.client.get(reverse(api_root_name))
