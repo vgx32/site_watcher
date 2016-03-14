@@ -30,8 +30,17 @@ class AlertApiTests(APITestCase):
     self.user = User.objects.create_user(username, 
                                           email='test@example.com',
                                           password=password)
-    self.client.login(username=username,
-                      password=password  )
+    self.credentials = {
+      'username' : username,
+      'password' : password
+    }
+    r = self.client.post(reverse(token_name), self.credentials )
+    self.assertTrue('token' in r.data)
+    self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
+
+
+
+
     # print("credentials " + self.client.credentials())
 
   
