@@ -4,9 +4,9 @@ from django.db import models
 
 class Alert(models.Model):
 
-  root_url = models.URLField()
-  scrape_level = models.IntegerField()
-  frequency = models.DurationField()
+  root_url = models.URLField() # required
+  scrape_level = models.IntegerField(default = 1)
+  # frequency = models.DurationField() #TODO: add in future, currently default to daily
   analysis_op = models.CharField(max_length=100)
   notification_type = models.CharField(max_length=100)
   last_ran = models.DateTimeField()
