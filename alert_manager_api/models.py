@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from rest_framework.authtoken.models import Token
-
+import datetime
 
 # add token to user
 
@@ -11,7 +11,8 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance= None, created=False, **kwargs):
   if created:
     Token.objects.create(user=instance)
-
+# look at this in the future
+# http://stackoverflow.com/questions/27570377/change-token-for-tokenauthentication-each-time-user-logs-in
 
 class Alert(models.Model):
   owner = models.ForeignKey('auth.User', 
@@ -20,9 +21,9 @@ class Alert(models.Model):
   root_url = models.URLField() # required
   scrape_level = models.IntegerField(default = 1)
   # frequency = models.DurationField() #TODO: add in future, currently default to daily
-  analysis_op = models.CharField(max_length=100)
-  notification_type = models.CharField(max_length=100)
-  last_ran = models.DateTimeField()
+  analysis_op = models.CharField(max_length=100, default='match')
+  notification_type = models.CharField(max_length=100, default='none')
+  last_ran = models.DateTimeField(default=datetime.datetime.now())
   # owner = models.ForeignKey('auth.User', related_name='alerts')
 
 class SearchTerm(models.Model):

@@ -27,17 +27,10 @@ class AlertApiTests(APITestCase):
     self.testAlert = {
       "root_url" : "http://www.example.com",
       "scrape_level" : 3,
-      "search_terms" : [{'term' : "domain"}, {'term' : "example"}],
+      "search_terms" : ["domain", "example"],
       "analysis_op" : "string_match",
       "notification_type": "none"
     }
-    # self.testAlert = {
-    #   "root_url" : "http://www.example.com",
-    #   "scrape_level" : 3,
-    #   "search_terms" : ["domain", "example"],
-    #   "analysis_op" : "string_match",
-    #   "notification_type": "none"
-    # }
     username = 'testhuser'
     password = 'password'
 
@@ -65,8 +58,8 @@ class AlertApiTests(APITestCase):
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, [])
     r = self.client.post(alert_endpoint, self.testAlert, format='json')
-    print(r.data)
-    self.assertEqual(r.status_code, status.HTTP_200_OK)
+    # print(r.data)
+    self.assertEqual(r.status_code, status.HTTP_201_CREATED)
     self.assertEqual(r.data, self.testAlert)
   
   def test_create_with_required_fields(self):
