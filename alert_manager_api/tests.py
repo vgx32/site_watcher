@@ -2,7 +2,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
-
+import json
+import pdb
 
 alerts_name = "alerts"
 alert_name = "alert"
@@ -12,17 +13,31 @@ token_name = "token"
 api_root_name = "api_root"
 
 # Create your tests here.
-
-class AlertApiTests(APITestCase):
-
-  def setUp(self):
-    self.testAlert = {
+testAlert = {
       "root_url" : "www.example.com",
       "scrape_level" : 3,
       "search_terms" : ["domain", "example"],
       "analysis_op" : "string_match",
       "notification_type": "none"
     }
+
+class AlertApiTests(APITestCase):
+
+  def setUp(self):
+    self.testAlert = {
+      "root_url" : "http://www.example.com",
+      "scrape_level" : 3,
+      "search_terms" : [{'term' : "domain"}, {'term' : "example"}],
+      "analysis_op" : "string_match",
+      "notification_type": "none"
+    }
+    # self.testAlert = {
+    #   "root_url" : "http://www.example.com",
+    #   "scrape_level" : 3,
+    #   "search_terms" : ["domain", "example"],
+    #   "analysis_op" : "string_match",
+    #   "notification_type": "none"
+    # }
     username = 'testhuser'
     password = 'password'
 
@@ -37,12 +52,6 @@ class AlertApiTests(APITestCase):
     r = self.client.post(reverse(token_name), self.credentials )
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
-
-
-
-
-    # print("credentials " + self.client.credentials())
-
   
   def test_api_root(self):
     pass
@@ -51,25 +60,23 @@ class AlertApiTests(APITestCase):
     pass
 
   def test_create_alert(self):
-    print("user in test : [%s ]" % self.user )
     alert_endpoint = reverse(alerts_name)
     r = self.client.get(alert_endpoint)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, [])
-
-    r = self.client.post(alert_endpoint, self.testAlert)
+    r = self.client.post(alert_endpoint, self.testAlert, format='json')
+    print(r.data)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, self.testAlert)
   
   def test_create_with_required_fields(self):
-    print("TODO returning error when some fields missing")
     pass
 
   def test_edit_alert(self):
     pass
 
   def test_alert_nonexistant(self):
-    print("TODO ")
+    pass
 
   def test_delete(self):
     pass
@@ -88,7 +95,6 @@ class AlertApiTests(APITestCase):
 
 
   def test_results_e2e(self):
-    print("TODO: think about what to do for this case")
     pass
 
 class AuthTests(APITestCase):
