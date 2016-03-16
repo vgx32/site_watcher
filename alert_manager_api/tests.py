@@ -89,8 +89,21 @@ class AlertApiTests(APITestCase):
       alert[k] = kval
 
   def test_get_all_alerts(self):
-    pass
+    alert_endpoint = reverse(alerts_name)
+    toCreate = []
+    for i in range(4):
+      curAlert = dict(self.testAlert)
+      curAlert["scrape_level"] += i
+      r = self.create_alert(curAlert)
+      self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+      toCreate.append(curAlert)
+    r = self.client.get(alert_endpoint)
+    self.assertEqual(len(r.data), len(toCreate))
+    for i in range(len(toCreate)):
+      self.verify_dict_contents(toCreate[i], r.data[i])
+    
 
+    
   def test_edit_alert(self):
     r =  self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
