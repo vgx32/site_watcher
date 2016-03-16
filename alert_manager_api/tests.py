@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
+import unittest
 import json
 import pdb
 
@@ -46,11 +47,13 @@ class AlertApiTests(APITestCase):
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
   
+  @unittest.skip("not implemented yet")
   def test_api_root(self):
-    pass
+    self.fail('TODO: implementation not defined')
 
+  @unittest.skip("not implemented yet")
   def test_api_schema(self):
-    pass
+    self.fail('TODO: implementation not defined')
 
   def create_alert(self, alert):
     return self.client.post(self.alerts_endpoint, alert, format='json')
@@ -137,26 +140,32 @@ class AlertApiTests(APITestCase):
     expected_response = {'detail' : 'Not found.'}
     self.assertEqual(r.data, expected_response)
   
+  @unittest.skip("not implemented yet")
   def test_run_alert_search(self):
-    # TODO: should I add an api to allow launching of a search?
-    pass
+    self.fail('TODO: should I add an api to allow launching of a search?')
 
 class MatchResultTest(APITestCase):
   def setUp(self):
     # super(MatchResultTest, self).setUp()
+    # self.fail('TODO: implementation not defined')
     pass
 
+  @unittest.skip("not implemented yet")
   def test_get_match_results(self):
-    pass
+    self.fail('TODO: implementation not defined')
 
+  @unittest.skip("not implemented yet")
   def test_clear_results(self):
-    pass
+    self.fail('TODO: implementation not defined')
 
+  @unittest.skip("not implemented yet")
   def test_delete_result(self):
-    pass
+    self.fail('TODO: implementation not defined')
 
+  @unittest.skip("not implemented yet")
   def test_results_e2e(self):
-    pass
+    # todo
+    self.fail('TODO: implementation not defined')
 
 class AuthTests(APITestCase):
 
