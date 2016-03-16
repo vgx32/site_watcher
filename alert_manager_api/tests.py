@@ -2,13 +2,14 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
+from alert_manager_api.models import Alert, MatchResult
 import unittest
 import json
 import pdb
 
 alerts_name = "alerts"
 alert_name = "alert"
-matchest_name = "matches"
+matches_name = "matches"
 match_name = "match"
 token_name = "token"
 api_root_name = "api_root"
@@ -22,7 +23,7 @@ _testAlert = {
       "notification_type": "none"
     }
 
-class AlertResultRoot(APITestCase):
+class AlertMatchResultRoot(APITestCase):
   def setUp(self):
     self.testAlert = {
       "root_url" : "http://www.example.com",
@@ -46,7 +47,7 @@ class AlertResultRoot(APITestCase):
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
 
-class AlertApiTests(AlertResultRoot):
+class AlertApiTests(AlertMatchResultRoot):
 
   
   @unittest.skip("not implemented yet")
@@ -146,22 +147,46 @@ class AlertApiTests(AlertResultRoot):
   def test_run_alert_search(self):
     self.fail('TODO: should I add an api to allow launching of a search?')
 
-class MatchResultApiTest(AlertResultRoot):
+class MatchResultApiTest(AlertMatchResultRoot):
   def setUp(self):
+    alert = Alert.objects.filter(owner=self.user)[0]
+    match1 = {
+      "alert" : alert,
+      "owner" : self.user,
+      "url" : alert.root_url,
+      "result_context": "There was a long time when many domains where present in the world"
+    }
+    match2 = {
+      "alert" : alert,
+      "owner" : self.user,
+      "url" : alert.root_url,
+      "result_context": "Too many examples of the world crappy credentials make things bad"
+    }
+
+    self.matches.append(match1)
+    self.matches.append(match2)
+    MatchResult.objects.create(**match1)
+    MatchResult.objects.create(**match2)
+
+
     # super(MatchResultTest, self).setUp()
     # self.fail('TODO: implementation not defined')
     pass
 
   @unittest.skip("not implemented yet")
-  def test_get_match_results(self):
+  def test_get_all_matches(self):
     self.fail('TODO: implementation not defined')
 
   @unittest.skip("not implemented yet")
-  def test_clear_results(self):
+  def test_get_match(self):
     self.fail('TODO: implementation not defined')
 
   @unittest.skip("not implemented yet")
-  def test_delete_result(self):
+  def test_clear_matches(self):
+    self.fail('TODO: implementation not defined')
+
+  @unittest.skip("not implemented yet")
+  def test_delete_match(self):
     self.fail('TODO: implementation not defined')
 
   @unittest.skip("not implemented yet")
