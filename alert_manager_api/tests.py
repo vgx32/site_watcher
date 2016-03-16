@@ -64,7 +64,9 @@ class AlertApiTests(APITestCase):
     self.assertEqual(r.data, [])
     r = self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(r.data, self.testAlert)
+    for k in self.testAlert.keys():
+      self.assertTrue(k in r.data)
+      self.assertEqual(r.data[k], self.testAlert[k])
    
   def test_create_with_required_fields(self):
     required_fields = {"root_url", "search_terms"}

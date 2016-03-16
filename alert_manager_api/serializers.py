@@ -32,14 +32,14 @@ class AlertSerializer(serializers.ModelSerializer):
   class Meta:
     model = Alert
     fields = (
-      # 'id'
-      # ,'owner'
-       'root_url'
+      'id'
+      , 'owner'
+      , 'root_url'
       , 'scrape_level'
       , 'search_terms'
       , 'analysis_op'
       , 'notification_type'
-      # , 'last_ran'
+      , 'last_ran'
       )
     depth = 1
 
