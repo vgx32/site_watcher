@@ -22,8 +22,7 @@ _testAlert = {
       "notification_type": "none"
     }
 
-class AlertApiTests(APITestCase):
-
+class AlertResultRoot(APITestCase):
   def setUp(self):
     self.testAlert = {
       "root_url" : "http://www.example.com",
@@ -46,6 +45,9 @@ class AlertApiTests(APITestCase):
     r = self.client.post(reverse(token_name), self.credentials )
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
+
+class AlertApiTests(AlertResultRoot):
+
   
   @unittest.skip("not implemented yet")
   def test_api_root(self):
@@ -144,7 +146,7 @@ class AlertApiTests(APITestCase):
   def test_run_alert_search(self):
     self.fail('TODO: should I add an api to allow launching of a search?')
 
-class MatchResultTest(APITestCase):
+class MatchResultApiTest(AlertResultRoot):
   def setUp(self):
     # super(MatchResultTest, self).setUp()
     # self.fail('TODO: implementation not defined')
@@ -179,8 +181,6 @@ class AuthTests(APITestCase):
         'username' : username,
         'password' : password
       }
-
-
 
     def test_obtain_token(self):
       r = self.client.post(reverse(token_name), self.credentials )
