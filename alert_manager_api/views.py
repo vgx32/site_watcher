@@ -1,26 +1,24 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework.decorators import list_route, api_view
+
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics, mixins
+from rest_framework import viewsets
 
 from alert_manager_api.models import Alert, MatchResult
-from alert_manager_api.serializers import AlertSerializer
-from rest_framework.views import APIView
+from alert_manager_api.serializers import AlertSerializer, MatchResultSerializer
 
 @api_view()
 def root(request):
   return Response({"result" : "ok"})
 
-class AlertListView(mixins.ListModelMixin,
-                mixins.CreateModelMixin,
-                generics.GenericAPIView):
-
-  queryset = Alert.objects.all()
+# add this to viewset
+class AlertViewSet(viewsets.ModelViewSet):
   serializer_class = AlertSerializer
+  
+  def get_queryset(self):
+    return Alert.objects.filter(owner=self.request.user)
 
-  def get(self, request, *args, **kwargs):
-    return self.list(request, *args, **kwargs)
-
-  def post(self, request, *args, **kwargs):
-    return self.create(request, *args, **kwargs)
+class MatchResultViewSet(viewsets.ModelViewSet):
+  serializer_class = MatchResultSerializer
+  
+  def get_queryset(self):
+    return MatchResult.objects.filter(owner=self.request.user)

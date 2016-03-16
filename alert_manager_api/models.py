@@ -26,7 +26,6 @@ class Alert(models.Model):
   analysis_op = models.CharField(max_length=100, default='match')
   notification_type = models.CharField(max_length=100, default='none')
   last_ran = models.DateTimeField(default=timezone.now())
-  # owner = models.ForeignKey('auth.User', related_name='alerts')
 
 class SearchTerm(models.Model):
   term = models.CharField(max_length=100)
