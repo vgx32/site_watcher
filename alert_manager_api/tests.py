@@ -13,7 +13,7 @@ token_name = "token"
 api_root_name = "api_root"
 
 # Create your tests here.
-testAlert = {
+_testAlert = {
       "root_url" : "www.example.com",
       "scrape_level" : 3,
       "search_terms" : ["domain", "example"],
@@ -56,7 +56,12 @@ class AlertApiTests(APITestCase):
     alert_endpoint = reverse(alerts_name)
     return self.client.post(alert_endpoint, alert, format='json')
     
-  
+  def verify_dict_contents(self, expected, acutal):
+    for k in expected.keys():
+      self.assertTrue(k in acutal)
+      # print("expected %s , actual %s " %(expected[k], acutal[k]))
+      self.assertEqual(acutal[k], expected[k])
+   
   def test_create_alert(self):
     alert_endpoint = reverse(alerts_name)
     r = self.client.get(alert_endpoint)
@@ -65,9 +70,7 @@ class AlertApiTests(APITestCase):
     r = self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
     self.testAlert['owner'] = self.user.username
-    for k in self.testAlert.keys():
-      self.assertTrue(k in r.data)
-      self.assertEqual(r.data[k], self.testAlert[k])
+    self.verify_dict_contents(self.testAlert, r.data)
    
   def test_create_with_required_fields(self):
     required_fields = {"root_url", "search_terms"}
@@ -85,14 +88,13 @@ class AlertApiTests(APITestCase):
         # self.assertEqual(r.data, alert) verify default values?
       alert[k] = kval
 
-
+  def test_get_all_alerts(self):
+    pass
 
   def test_edit_alert(self):
     r =  self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
     created = r.data
-
-    
 
   def test_delete_alert(self):
     pass
@@ -100,10 +102,8 @@ class AlertApiTests(APITestCase):
   def test_alert_nonexistant(self):
     pass
 
-  def test_get_all_alerts(self):
-    pass
-
   def test_run_alert_search(self):
+    # TODO: should I add an api to allow launching of a search?
     pass
 
 class MatchResultTest(APITestCase):
