@@ -29,9 +29,9 @@ match_detail = MatchResultViewSet.as_view({
 urlpatterns = [
     url(r'^$', root, name='api_root'),
     url(r'^alerts/$', alert_list, name='alerts'),
-    url(r'^alerts/(?P<alert_id>[0-9]+)/$', alert_detail, name='alert'),
+    url(r'^alerts/(?P<pk>[0-9]+)/$', alert_detail, name='alert'),
     url(r'^matches/$', match_list, name='matches'),
-    url(r'^matches/(?P<notification_id>[0-9]+)/$', match_detail, name='match'),
+    url(r'^matches/(?P<pk>[0-9]+)/$', match_detail, name='match'),
     url(r'^token-auth/$', views.obtain_auth_token, name='token'),
 ]
 
