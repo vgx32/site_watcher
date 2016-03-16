@@ -34,7 +34,7 @@ class AlertApiTests(APITestCase):
     username = 'testhuser'
     password = 'password'
 
-
+    self.alert_endpoint = reverse(alerts_name)
     self.user = User.objects.create_user(username, 
                                           email='test@example.com',
                                           password=password)
@@ -53,8 +53,7 @@ class AlertApiTests(APITestCase):
     pass
 
   def create_alert(self, alert):
-    alert_endpoint = reverse(alerts_name)
-    return self.client.post(alert_endpoint, alert, format='json')
+    return self.client.post(self.alert_endpoint, alert, format='json')
     
   def verify_dict_contents(self, expected, acutal):
     for k in expected.keys():
@@ -63,8 +62,7 @@ class AlertApiTests(APITestCase):
       self.assertEqual(acutal[k], expected[k])
    
   def test_create_alert(self):
-    alert_endpoint = reverse(alerts_name)
-    r = self.client.get(alert_endpoint)
+    r = self.client.get(self.alert_endpoint)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, [])
     r = self.create_alert(self.testAlert)
@@ -89,7 +87,6 @@ class AlertApiTests(APITestCase):
       alert[k] = kval
 
   def test_get_all_alerts(self):
-    alert_endpoint = reverse(alerts_name)
     toCreate = []
     for i in range(4):
       curAlert = dict(self.testAlert)
@@ -97,19 +94,18 @@ class AlertApiTests(APITestCase):
       r = self.create_alert(curAlert)
       self.assertEqual(r.status_code, status.HTTP_201_CREATED)
       toCreate.append(curAlert)
-    r = self.client.get(alert_endpoint)
+    r = self.client.get(self.alert_endpoint)
     self.assertEqual(len(r.data), len(toCreate))
     for i in range(len(toCreate)):
       self.verify_dict_contents(toCreate[i], r.data[i])
     
-
-    
   def test_edit_alert(self):
-    r =  self.create_alert(self.testAlert)
+    r = self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
     created = r.data
 
   def test_delete_alert(self):
+
     pass
 
   def test_alert_nonexistant(self):
