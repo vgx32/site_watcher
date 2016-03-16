@@ -52,16 +52,20 @@ class AlertApiTests(APITestCase):
   def test_api_schema(self):
     pass
 
+  def create_alert(self, alert):
+    alert_endpoint = reverse(alerts_name)
+    return self.client.post(alert_endpoint, alert, format='json')
+    
+  
   def test_create_alert(self):
     alert_endpoint = reverse(alerts_name)
     r = self.client.get(alert_endpoint)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(r.data, [])
-    r = self.client.post(alert_endpoint, self.testAlert, format='json')
-    # print(r.data)
+    r = self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
     self.assertEqual(r.data, self.testAlert)
-  
+   
   def test_create_with_required_fields(self):
     pass
 

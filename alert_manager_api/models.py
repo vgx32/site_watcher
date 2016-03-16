@@ -2,8 +2,10 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 import datetime
+
 
 # add token to user
 
@@ -23,7 +25,7 @@ class Alert(models.Model):
   # frequency = models.DurationField() #TODO: add in future, currently default to daily
   analysis_op = models.CharField(max_length=100, default='match')
   notification_type = models.CharField(max_length=100, default='none')
-  last_ran = models.DateTimeField(default=datetime.datetime.now())
+  last_ran = models.DateTimeField(default=timezone.now())
   # owner = models.ForeignKey('auth.User', related_name='alerts')
 
 class SearchTerm(models.Model):
