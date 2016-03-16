@@ -84,12 +84,19 @@ class AlertApiTests(APITestCase):
   def test_run_alert_search(self):
     pass
 
+class MatchResultTest(APITestCase):
+  def setUp(self):
+    # super(MatchResultTest, self).setUp()
+    pass
+
   def test_get_match_results(self):
     pass
 
   def test_clear_results(self):
     pass
 
+  def test_delete_result(self):
+    pass
 
   def test_results_e2e(self):
     pass
@@ -125,5 +132,3 @@ class AuthTests(APITestCase):
       r = self.client.get(reverse(api_root_name))
       self.assertTrue(status.is_client_error(r.status_code))
 
-
-      
