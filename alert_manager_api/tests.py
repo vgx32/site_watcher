@@ -67,7 +67,22 @@ class AlertApiTests(APITestCase):
     self.assertEqual(r.data, self.testAlert)
    
   def test_create_with_required_fields(self):
-    pass
+    required_fields = {"root_url", "search_terms"}
+    alert = self.testAlert
+    for k in alert.keys():
+      kval = alert[k]
+      del alert[k]
+      r = self.create_alert(alert)
+      if k in required_fields:
+        expected_response = {k : ['This field is required.']}
+        self.assertEqual(r.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(r.data, expected_response)
+      else:
+        self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+        # self.assertEqual(r.data, alert) verify default values?
+      alert[k] = kval
+
+
 
   def test_edit_alert(self):
     pass
@@ -75,7 +90,7 @@ class AlertApiTests(APITestCase):
   def test_alert_nonexistant(self):
     pass
 
-  def test_delete(self):
+  def test_delete_alert(self):
     pass
 
   def test_get_all_alerts(self):
