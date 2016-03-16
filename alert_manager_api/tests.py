@@ -118,15 +118,25 @@ class AlertApiTests(APITestCase):
     r = self.client.get(alert_url)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.verify_dict_contents(self.testAlert, r.data)
-    
   
-  def test_delete_alert(self):
-
-    pass
-
   def test_alert_nonexistant(self):
-    pass
-
+    alert_url = reverse(alert_name, args=[213789])
+    r = self.client.get(alert_url)
+    self.assertEqual(r.status_code, status.HTTP_404_NOT_FOUND)
+    expected_response = {'detail' : 'Not found.'}
+    self.assertEqual(r.data, expected_response)
+    
+  def test_delete_alert(self):
+    r = self.create_alert(self.testAlert)
+    self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+    alert_url = reverse(alert_name, args=[r.data['id']])
+    r = self.client.delete(alert_url)
+    self.assertEqual(r.status_code, status.HTTP_204_NO_CONTENT)
+    r = self.client.get(alert_url)
+    self.assertEqual(r.status_code, status.HTTP_404_NOT_FOUND)
+    expected_response = {'detail' : 'Not found.'}
+    self.assertEqual(r.data, expected_response)
+  
   def test_run_alert_search(self):
     # TODO: should I add an api to allow launching of a search?
     pass
