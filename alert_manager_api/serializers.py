@@ -31,6 +31,16 @@ class AlertSerializer(serializers.ModelSerializer):
       SearchTerm.objects.create(alert=alert, **term)
     return alert
 
+  def update(self, instance, validated_data):
+    search_terms = validated_data.pop('search_terms')
+    SearchTerm.objects.filter(alert=instance).delete()
+    for term in search_terms:
+      SearchTerm.objects.create(alert=instance, **term)
+    for k in validated_data.keys():
+      setattr(instance, k, validated_data[k])
+    instance.save()
+    return instance
+
   class Meta:
     model = Alert
     fields = (

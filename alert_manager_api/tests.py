@@ -108,16 +108,18 @@ class AlertApiTests(APITestCase):
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.verify_dict_contents(self.testAlert, r.data)
 
-  # def test_edit_alert(self):
-  #   r = self.create_alert(self.testAlert)
-  #   self.assertEqual(r.status_code, status.HTTP_201_CREATED)
-  #   created = r.data
-  #   alert_url = reverse(alert_name, args=[r.data['id']])
-  #   r = self.client.get(alert_url)
-  #   self.assertEqual(r.status_code, status.HTTP_200_OK)
+  def test_edit_alert(self):
+    r = self.create_alert(self.testAlert)
+    self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+    alert_url = reverse(alert_name, args=[r.data['id']])
+    self.testAlert['scrape_level']  +=1
+    r = self.client.put(alert_url, self.testAlert, format='json')
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
+    r = self.client.get(alert_url)
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
+    self.verify_dict_contents(self.testAlert, r.data)
     
-    # pdb.set_trace()
-
+  
   def test_delete_alert(self):
 
     pass
