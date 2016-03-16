@@ -64,6 +64,7 @@ class AlertApiTests(APITestCase):
     self.assertEqual(r.data, [])
     r = self.create_alert(self.testAlert)
     self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+    self.testAlert['owner'] = self.user.username
     for k in self.testAlert.keys():
       self.assertTrue(k in r.data)
       self.assertEqual(r.data[k], self.testAlert[k])
@@ -87,12 +88,16 @@ class AlertApiTests(APITestCase):
 
 
   def test_edit_alert(self):
+    r =  self.create_alert(self.testAlert)
+    self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+    created = r.data
+
+    
+
+  def test_delete_alert(self):
     pass
 
   def test_alert_nonexistant(self):
-    pass
-
-  def test_delete_alert(self):
     pass
 
   def test_get_all_alerts(self):

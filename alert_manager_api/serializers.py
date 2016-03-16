@@ -20,7 +20,9 @@ class SearchTermSerializer(serializers.ModelSerializer):
 
 class AlertSerializer(serializers.ModelSerializer):
   search_terms = SearchTermSerializer(many=True)
-  
+  owner = serializers.SlugRelatedField(read_only=True,
+                                      slug_field='username')
+
   def create(self, validated_data):
     user = self.context['request'].user
     search_terms = validated_data.pop('search_terms')
