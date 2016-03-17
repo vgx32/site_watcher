@@ -191,7 +191,6 @@ class MatchResultApiTest(AlertMatchResultRoot):
   def test_clear_matches(self):
     self.fail('TODO: implementation not defined')
 
-  @unittest.skip("not implemented yet")
   def test_delete_match(self):
     expected_response = {'detail' : 'Not found.'}
     for m in self.matches:
