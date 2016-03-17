@@ -21,4 +21,9 @@ class MatchResultViewSet(viewsets.ModelViewSet):
   serializer_class = MatchResultSerializer
   
   def get_queryset(self):
-    return MatchResult.objects.filter(owner=self.request.user)
+    if 'alert' in self.request.query_params:
+      alert_id = self.request.query_params['alert']
+      return MatchResult.objects.filter(owner=self.request.user).filter(alert=alert_id)
+
+    else:
+      return MatchResult.objects.filter(owner=self.request.user)

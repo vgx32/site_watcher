@@ -149,8 +149,8 @@ class MatchResultApiTest(AlertMatchResultRoot):
   def setUp(self):
     super(MatchResultApiTest, self).setUp()
     self.create_alert(self.testAlert)
-    # pdb.set_trace()
     alert = Alert.objects.filter(owner=self.user)[0]
+    self.alertInstance = alert
     match1 = {
       "alert" : alert,
       "owner" : self.user,
@@ -163,25 +163,37 @@ class MatchResultApiTest(AlertMatchResultRoot):
       "url" : alert.root_url,
       "result_context": "Too many examples of the world crappy credentials make things bad"
     }
-    self.matches = []
-    self.matches.append(match1)
-    self.matches.append(match2)
-    for m in self.matches:
+    secondAlertMatch = dict(match2)
+    self.allMatches = []
+    self.allMatches.append(match1)
+    self.allMatches.append(match2)
+    for m in self.allMatches:
       matchObj = MatchResult.objects.create(**m)
       m['alert'] = alert.id
       m['owner'] = self.user.username
       m['id'] = matchObj.id
+    self.firstAlertMatches = list(self.allMatches)
+    
+    # add a match result for another alert
+    r = self.create_alert(self.testAlert)
+    secondAlert = Alert.objects.filter(id=r.data['id'])[0]
+    secondAlertMatch['alert'] = secondAlert
+    matchObj = MatchResult.objects.create(**secondAlertMatch)
+    secondAlertMatch['alert'] = secondAlert.id
+    secondAlertMatch['owner'] = self.user.username
+    secondAlertMatch['id'] = matchObj.id
+    self.allMatches.append(secondAlertMatch)
 
   def test_get_all_matches(self):
     matches_url = reverse(matches_name)
     r = self.client.get(matches_url)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
-    self.assertEqual(len(self.matches), len(r.data))
-    for i in range(len(self.matches)):
-      self.verify_dict_contents(self.matches[i], r.data[i])
+    self.assertEqual(len(self.allMatches), len(r.data))
+    for i in range(len(self.allMatches)):
+      self.verify_dict_contents(self.allMatches[i], r.data[i])
 
   def test_get_match(self):
-    for m in self.matches:
+    for m in self.allMatches:
       match_url = reverse(match_name, args=[m['id']])
       r = self.client.get(match_url)
       self.assertEqual(r.status_code, status.HTTP_200_OK)
@@ -193,7 +205,7 @@ class MatchResultApiTest(AlertMatchResultRoot):
 
   def test_delete_match(self):
     expected_response = {'detail' : 'Not found.'}
-    for m in self.matches:
+    for m in self.allMatches:
       match_url = reverse(match_name, args=[m['id']])
       r = self.client.delete(match_url)
       self.assertEqual(r.status_code, status.HTTP_204_NO_CONTENT)
@@ -201,15 +213,17 @@ class MatchResultApiTest(AlertMatchResultRoot):
       self.assertEqual(r.status_code, status.HTTP_404_NOT_FOUND)
       self.assertEqual(r.data, expected_response)
 
-  @unittest.skip("not implemented yet")
   def test_get_matches_for_alert(self):
-    # todo
-    self.fail('TODO: implementation not defined')
-      
+    matches_url = reverse(matches_name)
+    r = self.client.get(matches_url, {'alert' : self.alertInstance.id}, format='html')
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(self.firstAlertMatches), len(r.data))
+    for i in range(len(self.firstAlertMatches)):
+      self.verify_dict_contents(self.firstAlertMatches[i], r.data[i])
+  
 
   @unittest.skip("not implemented yet")
   def test_results_e2e(self):
-    # todo
     self.fail('TODO: implementation not defined')
 
 
