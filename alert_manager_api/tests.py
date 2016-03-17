@@ -47,8 +47,15 @@ class AlertMatchResultRoot(APITestCase):
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
 
-class AlertApiTests(AlertMatchResultRoot):
+  def verify_dict_contents(self, expected, acutal):
+    for k in expected.keys():
+      self.assertTrue(k in acutal)
+      self.assertEqual(acutal[k], expected[k])
+  
+  def create_alert(self, alert):
+    return self.client.post(self.alerts_endpoint, alert, format='json')
 
+class AlertApiTests(AlertMatchResultRoot):
   
   @unittest.skip("not implemented yet")
   def test_api_root(self):
@@ -58,15 +65,6 @@ class AlertApiTests(AlertMatchResultRoot):
   def test_api_schema(self):
     self.fail('TODO: implementation not defined')
 
-  def create_alert(self, alert):
-    return self.client.post(self.alerts_endpoint, alert, format='json')
-    
-  def verify_dict_contents(self, expected, acutal):
-    for k in expected.keys():
-      self.assertTrue(k in acutal)
-      # print("expected %s , actual %s " %(expected[k], acutal[k]))
-      self.assertEqual(acutal[k], expected[k])
-   
   def test_create_alert(self):
     r = self.client.get(self.alerts_endpoint)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
@@ -149,6 +147,9 @@ class AlertApiTests(AlertMatchResultRoot):
 
 class MatchResultApiTest(AlertMatchResultRoot):
   def setUp(self):
+    super(MatchResultApiTest, self).setUp()
+    self.create_alert(self.testAlert)
+    # pdb.set_trace()
     alert = Alert.objects.filter(owner=self.user)[0]
     match1 = {
       "alert" : alert,
@@ -162,20 +163,24 @@ class MatchResultApiTest(AlertMatchResultRoot):
       "url" : alert.root_url,
       "result_context": "Too many examples of the world crappy credentials make things bad"
     }
-
-    self.matches.append(match1)
-    self.matches.append(match2)
     MatchResult.objects.create(**match1)
     MatchResult.objects.create(**match2)
+    self.matches = []
+    self.matches.append(match1)
+    self.matches.append(match2)
+    for m in self.matches:
+      m['alert'] = alert.id
+      m['owner'] = self.user.username
 
-
-    # super(MatchResultTest, self).setUp()
-    # self.fail('TODO: implementation not defined')
-    pass
-
-  @unittest.skip("not implemented yet")
+    
   def test_get_all_matches(self):
-    self.fail('TODO: implementation not defined')
+    matches_url = reverse(matches_name)
+    r = self.client.get(matches_url)
+    self.assertEqual(r.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(self.matches), len(r.data))
+    # pdb.set_trace()
+    for i in range(len(self.matches)):
+      self.verify_dict_contents(self.matches[i], r.data[i])
 
   @unittest.skip("not implemented yet")
   def test_get_match(self):

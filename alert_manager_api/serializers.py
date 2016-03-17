@@ -59,7 +59,9 @@ class AlertSerializer(serializers.ModelSerializer):
 
 
 class MatchResultSerializer(serializers.ModelSerializer):
-    
+    owner = serializers.SlugRelatedField(read_only=True,
+                                      slug_field='username')
+
     class Meta:
         model = MatchResult
-        fields = ('id', 'owner' ,'url', 'result_context')
+        fields = ('id', 'owner' ,'url', 'alert', 'result_context')
