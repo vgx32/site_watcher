@@ -163,29 +163,30 @@ class MatchResultApiTest(AlertMatchResultRoot):
       "url" : alert.root_url,
       "result_context": "Too many examples of the world crappy credentials make things bad"
     }
-    MatchResult.objects.create(**match1)
-    MatchResult.objects.create(**match2)
     self.matches = []
     self.matches.append(match1)
     self.matches.append(match2)
     for m in self.matches:
+      matchObj = MatchResult.objects.create(**m)
       m['alert'] = alert.id
       m['owner'] = self.user.username
+      m['id'] = matchObj.id
 
-    
   def test_get_all_matches(self):
     matches_url = reverse(matches_name)
     r = self.client.get(matches_url)
     self.assertEqual(r.status_code, status.HTTP_200_OK)
     self.assertEqual(len(self.matches), len(r.data))
-    # pdb.set_trace()
     for i in range(len(self.matches)):
       self.verify_dict_contents(self.matches[i], r.data[i])
 
-  @unittest.skip("not implemented yet")
   def test_get_match(self):
-    self.fail('TODO: implementation not defined')
-
+    for m in self.matches:
+      match_url = reverse(match_name, args=[m['id']])
+      r = self.client.get(match_url)
+      self.assertEqual(r.status_code, status.HTTP_200_OK)
+      self.verify_dict_contents(m, r.data)
+      
   @unittest.skip("not implemented yet")
   def test_clear_matches(self):
     self.fail('TODO: implementation not defined')
