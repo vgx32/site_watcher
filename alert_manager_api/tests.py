@@ -201,12 +201,18 @@ class MatchResultApiTest(AlertMatchResultRoot):
       r = self.client.get(match_url)
       self.assertEqual(r.status_code, status.HTTP_404_NOT_FOUND)
       self.assertEqual(r.data, expected_response)
+
+  @unittest.skip("not implemented yet")
+  def test_get_matches_for_alert(self):
+    # todo
+    self.fail('TODO: implementation not defined')
       
 
   @unittest.skip("not implemented yet")
   def test_results_e2e(self):
     # todo
     self.fail('TODO: implementation not defined')
+
 
 class AuthTests(APITestCase):
 
