@@ -193,7 +193,15 @@ class MatchResultApiTest(AlertMatchResultRoot):
 
   @unittest.skip("not implemented yet")
   def test_delete_match(self):
-    self.fail('TODO: implementation not defined')
+    expected_response = {'detail' : 'Not found.'}
+    for m in self.matches:
+      match_url = reverse(match_name, args=[m['id']])
+      r = self.client.delete(match_url)
+      self.assertEqual(r.status_code, status.HTTP_204_NO_CONTENT)
+      r = self.client.get(match_url)
+      self.assertEqual(r.status_code, status.HTTP_404_NOT_FOUND)
+      self.assertEqual(r.data, expected_response)
+      
 
   @unittest.skip("not implemented yet")
   def test_results_e2e(self):
