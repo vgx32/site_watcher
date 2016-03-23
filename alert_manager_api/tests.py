@@ -13,6 +13,7 @@ matches_name = "matches"
 match_name = "match"
 token_name = "token"
 api_root_name = "api_root"
+user_management_name = "user_management"
 
 # Create your tests here.
 _testAlert = {
@@ -23,7 +24,16 @@ _testAlert = {
       "notification_type": "none"
     }
 
-class AlertMatchResultRoot(APITestCase):
+class AppSharedTestCase(APITestCase):
+
+
+  def verify_dict_contents(self, expected, acutal):
+    for k in expected.keys():
+      self.assertTrue(k in acutal)
+      self.assertEqual(acutal[k], expected[k])
+
+
+class AlertMatchResultRoot(AppSharedTestCase):
   def setUp(self):
     self.testAlert = {
       "root_url" : "http://www.example.com",
@@ -46,11 +56,6 @@ class AlertMatchResultRoot(APITestCase):
     r = self.client.post(reverse(token_name), self.credentials )
     self.assertTrue('token' in r.data)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + r.data['token'])
-
-  def verify_dict_contents(self, expected, acutal):
-    for k in expected.keys():
-      self.assertTrue(k in acutal)
-      self.assertEqual(acutal[k], expected[k])
   
   def create_alert(self, alert):
     return self.client.post(self.alerts_endpoint, alert, format='json')
@@ -227,7 +232,7 @@ class MatchResultApiTest(AlertMatchResultRoot):
     self.fail('TODO: implementation not defined')
 
 
-class AuthTests(APITestCase):
+class AuthTests(AppSharedTestCase):
 
     def setUp(self):
       username = 'testhuser'
@@ -240,10 +245,13 @@ class AuthTests(APITestCase):
         'password' : password
       }
 
-    def test_obtain_token(self):
-      r = self.client.post(reverse(token_name), self.credentials )
+    def verify_token_endpoint(self, credentials):
+      r = self.client.post(reverse(token_name), credentials )
       self.assertEqual(r.status_code, status.HTTP_200_OK)
       self.assertTrue('token' in r.data)
+
+    def test_obtain_token(self):
+      self.verify_token_endpoint(self.credentials)
 
     def test_access_with_token(self):
       r = self.client.post(reverse(token_name), self.credentials )
@@ -256,3 +264,23 @@ class AuthTests(APITestCase):
       r = self.client.get(reverse(api_root_name))
       self.assertTrue(status.is_client_error(r.status_code))
 
+
+    def test_create_new_user(self):
+      user_data = {
+        "username" : "bobbay",
+        "password" : "a very secure password",
+        "email" : "bla@somedomain.com"
+      }
+      credentials = {
+        "username" : user_data["username"],
+        "password" : user_data["password"]
+      }
+      
+
+      r = self.client.post(reverse(user_management_name), user_data, format="json")
+      self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+      # pdb.set_trace()
+      del user_data["password"]
+      self.verify_dict_contents(user_data, r.data)
+      self.assertTrue("id" in r.data)
+      self.verify_token_endpoint(credentials)

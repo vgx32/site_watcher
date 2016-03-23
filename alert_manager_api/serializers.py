@@ -4,6 +4,21 @@ from django.contrib.auth.models import User
 import pdb
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+  def create(self, validated_data):
+    # pdb.set_trace()
+    user = User(email=validated_data['email'], username=validated_data['username'])
+    user.set_password(self.initial_data['password'])
+    user.save()
+    return user
+  
+  class Meta:
+    model = User
+    fields = ('id', 'username', 'email')
+    read_only_fields = ('id',)
+    write_only_fields = ('password',)
+
 class SearchTermSerializer(serializers.ModelSerializer):
 
   def to_internal_value(self, data):
