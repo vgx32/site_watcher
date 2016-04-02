@@ -9,18 +9,23 @@ import CreateUser from '../components/createUser';
 class CreateUserContainer extends Component {
 
   render () {
-    
     const { actions } = this.props;
+    let { errorMessage } = this.props.auth;
 
     return (
       <div className="create-user">
         <h1>Create new Account </h1>
-        <CreateUser createUser={actions.createUser} />
+        <CreateUser errorMessage={errorMessage} createUser={actions.createUser} />
       </div>
     );
   }
 }
 
+function mapStateToProps(state){
+  return {
+    auth: state.auth
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -29,6 +34,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  function(){ return {}},
+  mapStateToProps,
   mapDispatchToProps
 )(CreateUserContainer);
