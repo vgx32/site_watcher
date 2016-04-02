@@ -22,4 +22,9 @@ export function logout() {
   };
 }
 
+export function clearAuthError(){
+  return {
+    type : types.CLEAR_AUTH_ERROR,
+  };
+}
 

@@ -8,6 +8,10 @@ import CreateUser from '../components/createUser';
 
 class CreateUserContainer extends Component {
 
+  componentDidMount() {
+    this.props.actions.clearAuthError();
+  }
+
   render () {
     const { actions } = this.props;
     let { errorMessage } = this.props.auth;

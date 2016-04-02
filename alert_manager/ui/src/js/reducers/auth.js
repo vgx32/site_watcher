@@ -32,6 +32,10 @@ export default function (state = initialState, action) {
       }
       console.log("creating user " + action.email + ":" + action.password);
       return assign({}, state, {errorMessage : ""});;
+
+    case types.CLEAR_AUTH_ERROR:
+      return assign({}, state, {errorMessage: ""});
+
     case types.LOGIN:
       console.log("logging in user " + action );
       return state;
