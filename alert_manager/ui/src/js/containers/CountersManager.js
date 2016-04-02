@@ -10,7 +10,7 @@ export default class CounterManager extends Component {
     return (
       <div>
         <h1>This is a list of counters</h1>
-        <CreateUser /> 
+        
       </div>
 
     );

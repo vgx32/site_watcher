@@ -6,7 +6,7 @@ import FriendListApp from './containers/FriendListApp/FriendListApp';
 import NotFoundView from './views/NotFoundView';
 import AuthenticatedContainer from './containers/AuthenticatedContainer'
 import CounterManager from './containers/CountersManager'
-
+import CreateUser from './containers/CreateUser'
 
 class TestComponent extends React.Component {
    
@@ -22,7 +22,7 @@ class TestComponent extends React.Component {
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={FriendListApp} />
-    <Route path="/create-account" component={CounterManager} />
+    <Route path="/create-user" component={CreateUser} />
     <Route path="/about" component={CounterManager} />
     <Route path="/not-found" component={NotFoundView} />
     <Route path="/app" component={AuthenticatedContainer}>
@@ -32,7 +32,7 @@ export default (
       <Route path="/app/results" component={CounterManager}>
         <Route path="/app/results/:resultId" component={NotFoundView}/>
       </Route>
-      <Route path="/app/user" component={CounterManager} />
+      <Route path="/app/account" component={CounterManager} />
       
     </Route>
 

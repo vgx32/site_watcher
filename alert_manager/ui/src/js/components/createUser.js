@@ -27,19 +27,21 @@ export default class CreateUser extends Component {
   }
 
   handleSubmit(e) {
-    // debugger;
+    debugger;
     e.preventDefault()
     this.setState({errorMessage : ""});
     var username = React.findDOMNode(this.refs.new_email).value.trim();
     var password = React.findDOMNode(this.refs.new_password).value.trim();
     if (!username || !password) {
-      this.setState({errorMessage :"username or password is empty"});
+      this.setState({errorMessage : "username or password is empty"});
       return;
     }
     if (username.length < 5 || password.length < 6) {
       this.setState({errorMessage :"email field must be valid email and password at least 5 chars long"});
       return;       
     }
+    this.props.createUser(username, password);
+    this.setState({email: '', password: ''});
  }
 
 
@@ -60,7 +62,7 @@ export default class CreateUser extends Component {
             </div>
             <button type="submit" >Create User</button>
           </form>
-          {errorMessage}
+          <div className="error"> {errorMessage} </div>
         </div>
       </div>
     );

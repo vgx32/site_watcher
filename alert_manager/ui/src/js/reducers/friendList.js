@@ -18,15 +18,15 @@ const initialState = {
   friendsById: [
     {
       id: 0,
-      name: '2Pac'
+      name: 'friend 1'
     },
     {
       id: 1,
-      name: 'Dr.Dre'
+      name: 'Bob'
     },
     {
       id: 2,
-      name: 'Meh Man'
+      name: 'Billie Jean'
     }
   ]
 };

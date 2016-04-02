@@ -22,7 +22,7 @@ export default class App extends Component {
     );
     return (
       <div className="page-container">
-        {authedHeader}
+        {unAuthedHeader}
         {this.props.children}
       </div>
     );
