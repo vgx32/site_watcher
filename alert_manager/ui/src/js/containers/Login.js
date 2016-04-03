@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as AuthActions from '../actions/authActions';
-import CreateUser from '../components/credentialsInput';
+import Login from '../components/credentialsInput';
 
 class CreateUserContainer extends Component {
 
@@ -17,11 +17,11 @@ class CreateUserContainer extends Component {
     let { errorMessage } = this.props.auth;
 
     return (
-      <div className="create-user">
-        <h3>Create new Account </h3>
-        <CreateUser errorMessage={errorMessage} 
-                    sendCredentials={actions.createUser} 
-                    submitText="Create Account"/>
+      <div>
+        <h3>Login to Existing Account </h3>
+        <Login errorMessage={errorMessage} 
+                    sendCredentials={actions.login} 
+                    submitText="Login"/>
       </div>
     );
   }

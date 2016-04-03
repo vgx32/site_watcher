@@ -26,19 +26,27 @@ export default function (state = initialState, action) {
       if (emailError !== "") {
         return assign({}, state, {errorMessage : emailError});
       }
+
       var passwordError = verifyPasswordComplexity(action.password);
       if (passwordError !== "") {
         return assign({}, state, {errorMessage : passwordError});
       }
-      console.log("creating user " + action.email + ":" + action.password);
       return assign({}, state, {errorMessage : ""});;
 
     case types.CLEAR_AUTH_ERROR:
       return assign({}, state, {errorMessage: ""});
 
     case types.LOGIN:
-      console.log("logging in user " + action );
-      return state;
+      
+      if (action.email === "a@b.c" && action.password === "12345678") {
+        return assign({}, state, {
+          errorMessage: "Login correct!",
+          token: "a test token"
+        });
+      } else {
+        return assign({}, state, {errorMessage: "Incorrect email or password."});        
+      }
+      
     case types.LOGOUT:
       console.log("logging out");
       return {

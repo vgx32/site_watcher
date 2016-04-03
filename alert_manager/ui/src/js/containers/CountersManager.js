@@ -1,7 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
 
-import CreateUser from '../components/createUser';
 
 export default class CounterManager extends Component {
 

@@ -1,11 +1,12 @@
 import { Link } from 'react-router';
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
 
-export default class App extends Component {
+
+class App extends Component {
 
   render() {
-
     var unAuthedHeader = (
       <div>
         <Link to="/login" > Login </Link>
@@ -20,11 +21,21 @@ export default class App extends Component {
         <Link to="/not-found" > Logout </Link> {/*TODO: add component to logout*/}
       </div>
     );
+    var renderedHeader = this.props.auth.token? authedHeader : unAuthedHeader;
     return (
       <div className="page-container">
-        {unAuthedHeader}
+        {renderedHeader}
         {this.props.children}
       </div>
     );
   }
 }
+
+
+function mapStateToProps(state){
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(mapStateToProps)(App); 

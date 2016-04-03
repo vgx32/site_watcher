@@ -7,6 +7,8 @@ import NotFoundView from './views/NotFoundView';
 import AuthenticatedContainer from './containers/AuthenticatedContainer'
 import CounterManager from './containers/CountersManager'
 import CreateUser from './containers/CreateUser'
+import Login from './containers/Login'
+
 
 class TestComponent extends React.Component {
    
@@ -23,6 +25,7 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={FriendListApp} />
     <Route path="/create-user" component={CreateUser} />
+    <Route path="/login" component={Login} />
     <Route path="/about" component={CounterManager} />
     <Route path="/not-found" component={NotFoundView} />
     <Route path="/app" component={AuthenticatedContainer}>
