@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-
+import Logout from "../components/logout"
 
 class App extends Component {
 
@@ -18,7 +18,7 @@ class App extends Component {
         <Link to="/app/alerts" > Alerts </Link>
         <Link to="/app/results" > Scrape Results </Link>
         <Link to="/app/account" > Account </Link>
-        <Link to="/not-found" > Logout </Link> {/*TODO: add component to logout*/}
+        <Logout />
       </div>
     );
     var renderedHeader = this.props.auth.token? authedHeader : unAuthedHeader;

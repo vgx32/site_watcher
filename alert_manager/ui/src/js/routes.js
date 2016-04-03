@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute, Redirect } from 'react-router';
+import { Route, IndexRedirect, Redirect } from 'react-router';
 
 import App from './containers/app';
 import FriendListApp from './containers/FriendListApp/FriendListApp';
@@ -23,12 +23,13 @@ class TestComponent extends React.Component {
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={FriendListApp} />
+    <IndexRedirect to="/login" />
     <Route path="/create-user" component={CreateUser} />
     <Route path="/login" component={Login} />
     <Route path="/about" component={CounterManager} />
     <Route path="/not-found" component={NotFoundView} />
     <Route path="/app" component={AuthenticatedContainer}>
+      <IndexRedirect to="/app/alerts" />
       <Route path="/app/alerts" component={CounterManager} >
         <Route path="/app/alerts/:alertId" component={NotFoundView}/>
       </Route>

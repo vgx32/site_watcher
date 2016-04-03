@@ -38,7 +38,7 @@ export default function (state = initialState, action) {
 
     case types.LOGIN:
       
-      if (action.email === "a@b.c" && action.password === "12345678") {
+      if (action.email === "a@b.c" && action.password === "123") {
         return assign({}, state, {
           errorMessage: "Login correct!",
           token: "a test token"
