@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, IndexRedirect, Redirect } from 'react-router';
 
-import App from './containers/app';
 import FriendListApp from './containers/FriendListApp/FriendListApp';
 import NotFoundView from './views/NotFoundView';
-import AuthenticatedContainer from './containers/AuthenticatedContainer'
-import CounterManager from './containers/CountersManager'
-import CreateUser from './containers/CreateUser'
-import Login from './containers/Login'
 
+import Login from './containers/Login';
+import App from './containers/App';
+import AuthenticatedContainer from './containers/AuthenticatedContainer';
+import CreateUser from './containers/CreateUser';
+        
 
 class TestComponent extends React.Component {
    
@@ -26,17 +26,17 @@ export default (
     <IndexRedirect to="/login" />
     <Route path="/create-user" component={CreateUser} />
     <Route path="/login" component={Login} />
-    <Route path="/about" component={CounterManager} />
+    <Route path="/about" component={NotFoundView} />
     <Route path="/not-found" component={NotFoundView} />
     <Route path="/app" component={AuthenticatedContainer}>
       <IndexRedirect to="/app/alerts" />
-      <Route path="/app/alerts" component={CounterManager} >
+      <Route path="/app/alerts" component={NotFoundView} >
         <Route path="/app/alerts/:alertId" component={NotFoundView}/>
       </Route>
-      <Route path="/app/results" component={CounterManager}>
+      <Route path="/app/results" component={NotFoundView}>
         <Route path="/app/results/:resultId" component={NotFoundView}/>
       </Route>
-      <Route path="/app/account" component={CounterManager} />
+      <Route path="/app/account" component={NotFoundView} />
       
     </Route>
 
