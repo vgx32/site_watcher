@@ -15,7 +15,6 @@ export default class AuthenticatedContainer extends Component {
   }
 
   loadRootIfNotAuthed(auth){
-    // debugger;
     if (!auth.token) {
       hashHistory.push('/');
       console.log("redirecting to home");

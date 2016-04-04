@@ -6,6 +6,14 @@ import NotFoundView from './views/NotFoundView';
 
 import Login from './containers/Login';
 import App from './containers/App';
+import AlertListApp from './containers/AlertListApp';
+import ResultListApp from './containers/ResultListApp';
+
+import About from './components/about';
+import AccountDetails from './components/accountDetails';
+import ResultDetail from './components/resultDetail';
+import AlertDetail from './components/alertDetail';
+
 import AuthenticatedContainer from './containers/AuthenticatedContainer';
 import CreateUser from './containers/CreateUser';
         
@@ -26,17 +34,17 @@ export default (
     <IndexRedirect to="/login" />
     <Route path="/create-user" component={CreateUser} />
     <Route path="/login" component={Login} />
-    <Route path="/about" component={NotFoundView} />
+    <Route path="/about" component={About} />
     <Route path="/not-found" component={NotFoundView} />
     <Route path="/app" component={AuthenticatedContainer}>
       <IndexRedirect to="/app/alerts" />
-      <Route path="/app/alerts" component={NotFoundView} >
-        <Route path="/app/alerts/:alertId" component={NotFoundView}/>
+      <Route path="/app/alerts" component={AlertListApp} >
+        <Route path="/app/alerts/:alertId" component={AlertDetail}/>
       </Route>
-      <Route path="/app/results" component={NotFoundView}>
-        <Route path="/app/results/:resultId" component={NotFoundView}/>
+      <Route path="/app/results" component={ResultListApp}>
+        <Route path="/app/results/:resultId" component={ResultDetail}/>
       </Route>
-      <Route path="/app/account" component={NotFoundView} />
+      <Route path="/app/account" component={AccountDetails} />
       
     </Route>
 
