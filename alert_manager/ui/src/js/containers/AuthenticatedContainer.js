@@ -10,11 +10,12 @@ export default class AuthenticatedContainer extends Component {
 
 
   shouldComponentUpdate(nextProps, nextState){
-    this.loadRootIfNotAuthed(nextProps);
+    this.loadRootIfNotAuthed(nextProps.auth);
     return nextProps.auth.token !== undefined;
   }
 
   loadRootIfNotAuthed(auth){
+    // debugger;
     if (!auth.token) {
       hashHistory.push('/');
       console.log("redirecting to home");
