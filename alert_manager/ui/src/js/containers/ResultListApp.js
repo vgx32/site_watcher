@@ -10,11 +10,11 @@ import ResultList from "../components/resultList";
 class ResultListApp extends Component {
 
   render () {
-    const {resultList: {results}, actions} = this.props;
+    const {resultList, actions} = this.props;
     return (
       <div>
         <h1>List of Results</h1>
-        <ResultList results={results} actions={actions}/>
+        <ResultList results={resultList} actions={actions}/>
       </div>
     );
   }
