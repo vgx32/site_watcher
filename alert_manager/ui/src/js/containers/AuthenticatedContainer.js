@@ -27,7 +27,6 @@ export default class AuthenticatedContainer extends Component {
   render() {
     return (
       <div>
-        <h3> This is authenticated </h3>
         {this.props.children}
       </div>);
   }
