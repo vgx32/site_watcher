@@ -3,8 +3,8 @@ import * as types from '../constants/ActionTypes';
 import { assign } from 'lodash';
 
 const initialState = {
-  email : undefined,
-  token : undefined,
+  email : "test@email.com",
+  token : "blah blah",
   errorMessage : ""
 }
 
