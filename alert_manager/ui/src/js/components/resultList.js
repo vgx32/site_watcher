@@ -13,22 +13,20 @@ export default class ResultList extends Component {
       <div> 
        <h3> This is a Result list component </h3>
        <ul>
-        {this.renderList()}
+        {results.map((result) =>
+          (
+            <Result
+              key={result.id}
+              id={result.id}
+              context={result.context}
+              url={result.url}
+              alert={result.alert}
+              deleteResult={this.props.actions.deleteResult.bind({}, result.id)} />
+          )
+        ) 
+      }
        </ul>
       </div>);
   }
 
-  renderList() {
-    return this.props.results.map((result) =>
-      (
-        <Result
-          key={result.id}
-          id={result.id}
-          context={result.context}
-          url={result.url}
-          alert={result.alert}
-          deleteResult={this.props.actions.deleteResult.bind({}, result.id)} />
-      )
-    );
-  }
 }
