@@ -8,3 +8,13 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const CREATE_USER = 'CREATE_USER';
 export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
+
+// Alerts
+
+export const CREATE_ALERT = 'CREATE_ALERT';
+export const EDIT_ALERT = 'EDIT_ALERT';
+export const DELETE_ALERT = 'DELETE_ALERT';
+
+// Results
+
+export const DELETE_RESULT = 'DELETE_RESULT';
