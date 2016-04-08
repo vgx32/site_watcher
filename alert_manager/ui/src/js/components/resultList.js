@@ -4,8 +4,6 @@ import Result from './result';
 
 export default class ResultList extends Component {
 
-
-
   render(){
     var results = this.props.results;
     var actions = this.props.actions;
