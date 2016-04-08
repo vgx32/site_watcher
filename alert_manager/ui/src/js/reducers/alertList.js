@@ -6,29 +6,35 @@ const initialState =  [
     root_url: "http://google.com",
     scrape_level: 3,
     search_terms: ['search', 'lucky'],
-    'analysis_op': 'any_match',
-    'notification_type' : 'email',
-    'last_ran': '5/11/14 13:00 GMT'
+    analysis_op: 'any_match',
+    notification_type : 'email',
+    last_ran: '5/11/14 13:00 GMT'
   },
   {
     id: 1,
     root_url: "http://example.com",
     scrape_level: 3,
     search_terms: ['domain', 'example', 'icann'],
-    'analysis_op': 'any_match',
-    'notification_type' : 'email',
-    'last_ran': '4/11/16 5:00 GMT'
+    analysis_op: 'any_match',
+    notification_type : 'email',
+    last_ran: '4/11/16 5:00 GMT'
   },
   {
     id: 13,
     root_url: "http://geekwire.com",
     scrape_level: 3,
     search_terms: ['amazon', 'buys', 'microsoft cloud'],
-    'analysis_op': 'any_match',
-    'notification_type' : 'email',
-    'last_ran': 'Yesterday'
+    analysis_op: 'any_match',
+    notification_type : 'email',
+    last_ran: 'Yesterday'
   },
 ];
+
+const testValues = {  
+  analysis_op: 'any_match',
+  notification_type : 'email',
+  last_ran: 'Yesterday'
+};
 // id root_url scrape_level search_terms analysis_op notification_type last_ran
 
 export default function (state = initialState, action) {
@@ -36,7 +42,8 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case types.CREATE_ALERT:
     // TODO -- add code to talk to server
-      return [...state, Object.assign({id: 12}, action.newAlert)];
+      var id = Math.floor(Math.random() * 1000);
+      return [Object.assign({id: id}, testValues, action.newAlert), ...state];
   
     case types.EDIT_ALERT:
       return state.map((alert) => {
