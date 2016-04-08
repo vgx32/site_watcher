@@ -2,7 +2,7 @@
 import React, { Component} from 'react';
 
 import AlertList from "../components/alertList";
-import AddAlert from "../components/addAlert";
+import CreateAlert from "../components/createAlert";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,7 +15,7 @@ class AlertListApp extends Component {
     const {alertList, actions} = this.props;
     return (
       <div>
-        <AddAlert addAlert={actions.createAlert}/>
+        <CreateAlert createAlert={actions.createAlert}/>
         <h1>List of existing Alerts</h1>
         <AlertList alerts={alertList} actions={actions}/>
       </div>
