@@ -7,6 +7,12 @@ export function createAlert(newAlert){
     newAlert: newAlert
   }
 } 
+export function toggleCreatingAlert(){
+  return {
+    type: types.TOGGLE_CREATING_ALERT,
+  }
+} 
+
 export function editAlert(id, newValues){
   return {
     type: types.EDIT_ALERT,

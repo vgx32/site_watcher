@@ -12,6 +12,7 @@ export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
 // Alerts
 
 export const CREATE_ALERT = 'CREATE_ALERT';
+export const TOGGLE_CREATING_ALERT = 'TOGGLE_CREATING_ALERT';
 export const EDIT_ALERT = 'EDIT_ALERT';
 export const DELETE_ALERT = 'DELETE_ALERT';
 

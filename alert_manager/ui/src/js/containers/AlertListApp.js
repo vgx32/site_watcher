@@ -12,12 +12,15 @@ import * as AlertActions from '../actions/AlertActions';
 class AlertListApp extends Component {
 
   render () {
-    const {alertList, actions} = this.props;
+    const {alertList: {alerts, creatingAlert}, actions} = this.props;
     return (
       <div>
-        <CreateAlert createAlert={actions.createAlert}/>
+        <CreateAlert 
+          showCreateForm={creatingAlert} 
+          createAlert={actions.createAlert}
+          toggleCreateForm={actions.toggleCreatingAlert}/>
         <h1>List of existing Alerts</h1>
-        <AlertList alerts={alertList} actions={actions}/>
+        <AlertList alerts={alerts} actions={actions}/>
       </div>
     );
   }
