@@ -16,9 +16,18 @@ export function toggleCreatingAlert(){
 export function editAlert(id, newValues){
   return {
     type: types.EDIT_ALERT,
-    newValues: newValues
+    newValues: newValues,
+    id: id
   }
 } 
+
+export function toggleEditAlert(id){
+  return {
+    type: types.TOGGLE_EDIT_ALERT,
+    id: id
+  }
+} 
+
 export function deleteAlert(id){
   return {
     type: types.DELETE_ALERT,

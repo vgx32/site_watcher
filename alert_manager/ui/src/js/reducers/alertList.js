@@ -49,8 +49,10 @@ export default function (state = initialState, action) {
     case types.CREATE_ALERT:
     // TODO -- add code to talk to server
       var id = Math.floor(Math.random() * 1000);
-      return {...state,
-        alerts: [Object.assign({id: id}, testValues, action.newAlert), ...state.alerts]};
+      return {
+        ...state,
+        alerts: [Object.assign({id: id}, testValues, action.newAlert), ...state.alerts]
+      };
     case types.EDIT_ALERT:
       return {
           ...state,
@@ -60,7 +62,19 @@ export default function (state = initialState, action) {
               } else {
                 return alert;
               }
-            })};
+            })
+        };
+    case types.TOGGLE_EDIT_ALERT:
+      return {
+          ...state,
+          alerts: state.alerts.map((alert) => {
+              if (alert.id === action.id) {
+                return Object.assign({}, alert, {editing: !alert.editing});
+              } else {
+                return alert;
+              }
+            })
+        };
   
     case types.DELETE_ALERT:
       console.log("deleting result " + action.id);

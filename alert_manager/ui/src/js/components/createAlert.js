@@ -16,8 +16,10 @@ export default class CreateAlert extends Component {
   render() {
     if(this.props.showCreateForm){
       return (<AlertInput 
-              createAlert={this.props.createAlert} 
-              cancel={this.props.toggleCreateForm}/>);
+              confirmAlertInput={this.props.createAlert} 
+              cancel={this.props.toggleCreateForm}
+              defaultDepth="0"
+              confirmText="Create"/>);
     } else {
       return (
         <button onClick={this.handleShowCreate.bind(this)}> 

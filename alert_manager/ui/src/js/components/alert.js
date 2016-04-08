@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import AlertInput from './alertInput';
+
 export default class Alert extends Component {
 
    static propTypes = {
@@ -11,10 +13,12 @@ export default class Alert extends Component {
     notification_type: PropTypes.string.isRequired,
     last_ran: PropTypes.string.isRequired,
     editAlert: PropTypes.func.isRequired,
+    toggleEdit: PropTypes.func.isRequired,
+    editing: PropTypes.bool.isRequired,
     deleteAlert: PropTypes.func.isRequired
   };
 
-  render(){
+  displayAlert() {
     return (
       <li> 
         <div> 
@@ -24,7 +28,7 @@ export default class Alert extends Component {
           url: <a href={this.props.root_url}> {this.props.root_url} </a>
         </div>
         <div> 
-          Scrape Level: {this.props.scrape_level}
+          Search Depth: {this.props.scrape_level}
         </div>
         <ul>
           {this.props.search_terms.map(term => (<li><div> {term} </div></li>))}
@@ -39,7 +43,7 @@ export default class Alert extends Component {
         <div>
           Last ran: {this.props.last_ran}
         </div>
-        <button onClick={this.props.editAlert}>
+        <button onClick={this.props.toggleEdit}>
           Edit  
         </button>
         <button onClick={this.props.deleteAlert}>
@@ -48,5 +52,19 @@ export default class Alert extends Component {
 
       </li>
     );
+  }
+
+  render(){
+    if(this.props.editing){
+      return <AlertInput 
+        confirmText="Confirm" 
+        confirmAlertInput={this.props.editAlert}
+        cancel={this.props.toggleEdit}
+        defaultURL={this.props.root_url}
+        defaultTerms={this.props.search_terms.join(", ")}
+        defaultDepth={this.props.scrape_level}/>
+    } else{
+      return this.displayAlert();
+    }
   }
 }

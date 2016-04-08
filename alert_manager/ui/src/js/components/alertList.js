@@ -15,15 +15,10 @@ export default class AlertList extends Component {
           (
             <Alert
               key={alert.id}
-              id={alert.id}
-              root_url={alert.root_url}
-              scrape_level={alert.scrape_level}
-              search_terms={alert.search_terms}
-              analysis_op={alert.analysis_op}
-              notification_type={alert.notification_type}
-              last_ran={alert.last_ran}
-              editAlert={this.props.actions.editAlert.bind({}, alert.id)}          
-              deleteAlert={this.props.actions.deleteAlert.bind({}, alert.id)} />))
+              {...alert}
+              editAlert={actions.editAlert.bind({}, alert.id)}          
+              toggleEdit={actions.toggleEditAlert.bind({}, alert.id)}          
+              deleteAlert={actions.deleteAlert.bind({}, alert.id)} />))
         }
        </ul>
       </div>);
